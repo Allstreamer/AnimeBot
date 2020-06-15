@@ -1,0 +1,5 @@
+```Commands:
+🌐ping - Check If Bot Is Connected and It's Uptime
+💬meme - Get Some Quality Memes
+🕒addchannel - send a new anime meme every 2 minutes
+⛽stats - how much cpu the bot is using```
