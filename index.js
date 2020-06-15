@@ -12,7 +12,7 @@ const client = new Discord.Client({
 });
 
 client.on('ready', () => { //Trigers When Bot Logs in
-    client.user.setPresence({ activity: { name:'Dying'}, status: 'online'});
+    client.user.setPresence({ activity: { name:'Watching Love is war'}, status: 'online'});
     console.log(`Bot is online!`);
 });
 
