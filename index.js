@@ -66,6 +66,7 @@ client.on('message', async message => {
                 message.channel.send("I already Post Here")
             }else {
                 channels.push(message.channel);
+		message.channel.send("I Will Now Post Here");
                 console.log(`Added (${message.channel.name}) Channel from (${message.channel.guild.name})`);
             }
         }
