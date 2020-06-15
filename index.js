@@ -25,8 +25,16 @@ const helpData = fs.readFileSync('Help.txt', 'utf8', function(err, data) {
     return data.toString();
 });
 
+const LoadingBarCharacter = "■";
 var channels = [];
 const timerLength = 1000 * (process.env.aniinterval);
+
+function GenerateLoadingBar(value,maxValue){
+    let percent = Math.round((value / maxValue) * 10);
+    let temp = LoadingBarCharacter.repeat(percent);
+    temp += "▢".repeat(10 - percent);
+    return `[${temp}]`;
+}
 
 //////////////////////
 //Message Processing//
@@ -37,6 +45,7 @@ client.on('message', async message => {
     if (message.channel.type === 'dm') { // Direct Message
         return; //Optionally handle direct messages
     }
+    console.log(message.content)
     
     if (message.content.indexOf(Settings.prefix) === 0) {
 
@@ -54,11 +63,14 @@ client.on('message', async message => {
             return;
         }
         else if (cmd === 'stats'){
+            let memUsage = Math.round(process.memoryUsage().heapTotal / 1000000);
             const statsEmbed = new Discord.MessageEmbed()
                             .setAuthor(client.user.username)
                             .setColor("#00ff00")
-                            .addField("💻",`Cpu Usage: ${Math.round(process.cpuUsage().user / 1000)}ms`)
-                            .addField("🔳", `Memory Usage: ${Math.round(process.memoryUsage().heapTotal / 1000000)}mb`)
+                            .addField("💿",`Cpu Usage: ${Math.round(process.cpuUsage().user / 1000)}ms`)
+                            .addField("📁", `Memory Usage: ${GenerateLoadingBar(memUsage,500)}${memUsage}mb`)
+                            .addField("💻", `Platform: ${process.platform}`)
+                            .addField("🛠",`${process.version}`);
             message.channel.send(statsEmbed);
         }
         else if (cmd === 'addchannel'){
@@ -66,7 +78,6 @@ client.on('message', async message => {
                 message.channel.send("I already Post Here")
             }else {
                 channels.push(message.channel);
-		message.channel.send("I Will Now Post Here");
                 console.log(`Added (${message.channel.name}) Channel from (${message.channel.guild.name})`);
             }
         }
