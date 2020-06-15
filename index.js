@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const fs = require('fs');
 const { memeAsync } = require('memejs');
-const Settings = require('./settings.json');
+const Settings = require('./Settings.json');
 //https://discord.com/oauth2/authorize?client_id=722119730701533245&permissions=8&scope=bot
 
 const client = new Discord.Client({
@@ -26,7 +26,7 @@ const helpData = fs.readFileSync('Help.txt', 'utf8', function(err, data) {
 });
 
 var channels = [];
-const timerLength = 1000 * (process.env.aniinterval || 15);
+const timerLength = 1000 * (process.env.aniinterval);
 
 //////////////////////
 //Message Processing//
@@ -107,7 +107,7 @@ client.on('message', async message => {
     }
 });
 
-client.login(Settings.token || process.env.token);
+client.login(process.env.token);
 
 function yourFunction(){
     console.log(`Sending Anime Memes To ${channels.length} Channels!\n`);
