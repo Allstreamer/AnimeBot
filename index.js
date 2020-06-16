@@ -30,7 +30,7 @@ var channels = [];
 const timerLength = 1000 * (process.env.aniinterval);
 
 function GenerateLoadingBar(value,maxValue){
-    let percent = Math.round((value / maxValue) * 10);
+    let percent = Math.round((value / maxValue) * 10); //0.0 - 1.0 5
     let temp = LoadingBarCharacter.repeat(percent);
     temp += "▢".repeat(10 - percent);
     return `[${temp}]`;
@@ -77,6 +77,7 @@ client.on('message', async message => {
             if (channels.includes(message.channel)){
                 message.channel.send("I already Post Here")
             }else {
+                message.channel.send("I Will Now Post Memes Here");
                 channels.push(message.channel);
                 console.log(`Added (${message.channel.name}) Channel from (${message.channel.guild.name})`);
             }
