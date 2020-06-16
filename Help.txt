@@ -1,6 +1,6 @@
 ```Commands:
-🌐ping - Check If Bot Is Connected and It's Uptime
-💬meme - Get Some Quality Memes
-🕒addchannel - send a new anime meme every 1 minutes
-⭕remchannel - removes the channel from list
-🛠stats - Shows Some Statistics For The Bot```
+🌐Ping - Check if Bot is connected and it's Uptime
+💬Meme - Get some quality Memes
+🕒Addchannel - Send a new Anime-meme every 1 Minute
+⭕Remchannel - Removes the Channel from List
+🛠Stats - Shows some Statistics for the Bot```
