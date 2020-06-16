@@ -1,7 +1,9 @@
 const Discord = require('discord.js');
 const fs = require('fs');
 const { memeAsync } = require('memejs');
-const Settings = require('./Settings.json');
+const { token,
+        owner,
+        prefix } = require('./Settings.json');
 //https://discord.com/oauth2/authorize?client_id=722119730701533245&permissions=8&scope=bot
 
 const client = new Discord.Client({
@@ -12,7 +14,9 @@ const client = new Discord.Client({
 });
 
 client.on('ready', () => { //Trigers When Bot Logs in
-    client.user.setPresence({ activity: { name:'Watching Love is war'}, status: 'online'});
+    client.user.setPresence({ activity: { name:'Love is War'}, status: 'online'})
+    .catch(err => { console.log(err) });
+
     console.log(`Bot is online!`);
 });
 
@@ -27,7 +31,7 @@ const helpData = fs.readFileSync('Help.txt', 'utf8', function(err, data) {
 
 const LoadingBarCharacter = "■";
 var channels = [];
-const timerLength = 1000 * (process.env.aniinterval);
+const timerLength = 1000 * (process.env.aniinterval || 30);
 
 function GenerateLoadingBar(value,maxValue){
     let percent = Math.round((value / maxValue) * 10); //0.0 - 1.0 5
@@ -45,11 +49,11 @@ client.on('message', async message => {
     if (message.channel.type === 'dm') { // Direct Message
         return; //Optionally handle direct messages
     }
-    console.log(message.content)
+    console.log(message.content);
     
-    if (message.content.toLowerCase().indexOf(Settings.prefix.toLowerCase()) === 0) {
+    if (message.content.toLowerCase().indexOf(prefix.toLowerCase()) === 0) {
 
-        let msg = message.content.toLowerCase().slice(Settings.prefix.length); // slice of the prefix on the message
+        let msg = message.content.toLowerCase().slice(prefix.length); // slice of the prefix on the message
         let args = msg.split(' '); // break the message into part by spaces
         let cmd = args[0].toLowerCase(); // set the first word as the command in lowercase just in case
         args.shift(); // delete the first word from the args
@@ -63,6 +67,7 @@ client.on('message', async message => {
             message.channel.send(PingEmbed);
             return;
         }
+
         else if (cmd === 'stats'){
             let memUsage = Math.round(process.memoryUsage().heapTotal / 1000000);
             const statsEmbed = new Discord.MessageEmbed()
@@ -71,18 +76,20 @@ client.on('message', async message => {
                             .addField("💿",`Cpu Usage: ${Math.round(process.cpuUsage().user / 1000)}ms`)
                             .addField("📁", `Memory Usage: ${GenerateLoadingBar(memUsage,500)}${memUsage}mb`)
                             .addField("💻", `Platform: ${process.platform}`)
-                            .addField("🛠",`${process.version}`);
+                            .addField("🛠",`Node.js ${process.version}`);
             message.channel.send(statsEmbed);
         }
+
         else if (cmd === 'addchannel'){
             if (channels.includes(message.channel)){
-                message.channel.send("I already Post Here")
+                message.channel.send("I already Post Here");
             }else {
                 message.channel.send("I Will Now Post Memes Here");
                 channels.push(message.channel);
                 console.log(`Added (${message.channel.name}) Channel from (${message.channel.guild.name})`);
             }
         }
+
         else if (cmd === 'remchannel'){
             if (channels.includes(message.channel)){
                 channels.splice(channels.indexOf(message.channel));
@@ -92,6 +99,7 @@ client.on('message', async message => {
                 message.channel.send("Channel Not In List!");
             }
         }
+
         else if (cmd === 'meme'){
             let subreddit = (args.length >= 1 ? args[0] : "animemes");
 
@@ -112,7 +120,7 @@ client.on('message', async message => {
             return;
         }
 
-        else if (cmd === 'shutdown' && message.author.id == Settings.owner) {
+        else if (cmd === 'shutdown' && message.author.id == owner) {
             message.reply(`Shutting Down The Bot❗`).then(message => {
                 client.destroy();
                 process.exit();
@@ -121,7 +129,7 @@ client.on('message', async message => {
     }
 });
 
-client.login(process.env.token);
+client.login(process.env.token || token);
 
 function yourFunction(){
     console.log(`Sending Anime Memes To ${channels.length} Channels!\n`);
