@@ -55,10 +55,11 @@ client.on('message', async message => {
         args.shift(); // delete the first word from the args
 
         if (cmd === 'ping') {
+            let uptimeInMinutes = Math.round((client.uptime / 1000) / 60);
             const PingEmbed = new Discord.MessageEmbed()
             .setAuthor(client.user.username)
             .setColor("#ff0000")
-            .addField("🏓",`Pong in ${client.ws.ping}\nThe Bot Has Been Up For ${Math.round((client.uptime / 1000) / 60)} Minutes!`)
+            .addField("🏓",`Pong in ${client.ws.ping}ms\nThe Bot Has Been Up For ${uptimeInMinutes} Minute${uptimeInMinutes == 1 ? "" : "s"}!`);
             message.channel.send(PingEmbed);
             return;
         }
