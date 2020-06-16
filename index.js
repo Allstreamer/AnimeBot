@@ -47,9 +47,9 @@ client.on('message', async message => {
     }
     console.log(message.content)
     
-    if (message.content.indexOf(Settings.prefix) === 0) {
+    if (message.content.toLowerCase().indexOf(Settings.prefix.toLowerCase()) === 0) {
 
-        let msg = message.content.slice(Settings.prefix.length); // slice of the prefix on the message
+        let msg = message.content.toLowerCase().slice(Settings.prefix.length); // slice of the prefix on the message
         let args = msg.split(' '); // break the message into part by spaces
         let cmd = args[0].toLowerCase(); // set the first word as the command in lowercase just in case
         args.shift(); // delete the first word from the args
