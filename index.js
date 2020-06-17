@@ -1,47 +1,51 @@
-const Discord = require('discord.js');
-const fs = require('fs');
-const rgbHex = require('rgb-hex');
-const { memeAsync } = require('memejs');
+const Discord = require('discord.js');          //Discord Connection Package
+const fs = require('fs');                       //For Loading And Saving Json Files
+const rgbHex = require('rgb-hex');              //For Converting RGB Color Space To Hex
+const { memeAsync } = require('memejs');        //For Grabbing Image Of Of Any Subreddit
 const { owner,
-        prefix } = require('./Settings.json');
-const { token } = require('./token.json');
-//https://discord.com/oauth2/authorize?client_id=722119730701533245&permissions=8&scope=bot
+        prefix } = require('./Settings.json');  //Prefix And Owner Settings
+const { token } = require('./token.json');      //Discord Bot Token
+
+//https://discord.com/oauth2/authorize?client_id=722119730701533245&permissions=8&scope=bot Original Bot Invite Link
 
 const client = new Discord.Client({
-    disableEveryone: true,
+    disableEveryone: true,              //Prevents Bot From Doing @everyone
     disabledEvents: ['TYPING_START'],
-    messageCacheLifetime: 60,
-    messageSweepInterval: 60
+    messageCacheLifetime: 60,           //Life Time Of A Message Untill It can be Deleted
+    messageSweepInterval: 60            //Invterval of When Messages Are Going To Be Deleted
 });
 
-client.on('ready', () => { //Trigers When Bot Logs in
-    client.user.setPresence({ activity: { name:'Love is War'}, status: 'online'})
+client.on('ready', () => {                                                          //Trigers When Bot Logs in
+    client.user.setPresence({ activity: { name:'Love is War'}, status: 'online'})   //Sets The Game The Bot Is Playing and If It's Online/Idle/Invisible
     .catch(err => { console.log(err) });
 
     console.log(`Bot is online!`);
 });
 
-client.on('guildCreate', guild => { //Trigers When Bot Is Invited
+client.on('guildCreate', guild => {     //Trigers When Bot Is Invited To A New Discord Server
     console.log(`I've joined the guild ${guild.name} (${guild.id}), owned by ${guild.owner.user.username} (${guild.owner.user.id}).`);
 });
 
-const helpData = fs.readFileSync('Help.txt', 'utf8', function(err, data) {
+const helpData = fs.readFileSync('Help.txt', 'utf8', function(err, data) {  //Reads Help Data From Help.txt File
     if (err) console.log('Help File Missing!');
-    return data.toString();
+    return data.toString();                                                 //Converts File Data To String
 });
 
-const LoadingBarCharacter = "■";
-var channels = [];
-const timerLength = 1000 * (process.env.aniinterval || 30);
+const LoadingBarCharacter = "■";                            //Character That Is Used To Generate Text Loading Bar
+var channels = [];                                          //List Of Channels That Memes Are Sent To Every timerLength
+const timerLength = 1000 * (process.env.aniinterval || 30); //(In Milliseconds) Either Takes Enviroment Varible
 
-function GenerateLoadingBar(value,maxValue){
-    let percent = Math.round((value / maxValue) * 10); //0.0 - 1.0 5
-    let temp = LoadingBarCharacter.repeat(percent);
-    temp += "▢".repeat(10 - percent);
-    return `[${temp}]`;
+function GenerateLoadingBar(value,maxValue){                //Generates An Ascii Loading Bar With M
+    let percent = Math.round((value / maxValue) * 10);      //Gets Percent Value And Multiplys it With 10 so it ranges from 0-10 insted of 0.0 - 1.0
+    let temp = LoadingBarCharacter.repeat(percent);         //Adds Full Loading Bar Chracter "Percent" Times
+    temp += "▢".repeat(10 - percent);                       //Repeats Empty Character (The Diffrence Between 100% minus The Current Percent) Times
+    return `[${temp}]`;                                      //Adds A Bit Of Style To The Bar And Returns It As An String
 }
-const scaleNum = (num, inMin, inMax, outMin, outMax) => {
-    return (num - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+Number.prototype.clamp = function(min, max) {               //Clampes A Number Between Two Values
+    return Math.min(Math.max(this, min), max);
+};
+const scaleNum = (num, inMin, inMax, outMin, outMax) => {   //Scales A Number Between A Range and Clamps It Between The Range
+    return ((num - inMin) * (outMax - outMin) / (inMax - inMin) + outMin).clamp(outMin,outMax);
 }
 
 //////////////////////
@@ -64,7 +68,7 @@ client.on('message', async message => {
 
         if (cmd === 'ping') {
             let uptimeInMinutes = Math.round((client.uptime / 1000) / 60);
-            let pingRange = scaleNum(client.ws.ping,0,10000,1,255);
+            let pingRange = scaleNum(client.ws.ping,0,1000,1,255);
             const PingColor = rgbHex(pingRange, 255 - pingRange, 0);
 
             const PingEmbed = new Discord.MessageEmbed()
