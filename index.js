@@ -40,8 +40,11 @@ function GenerateLoadingBar(value,maxValue){
     temp += "▢".repeat(10 - percent);
     return `[${temp}]`;
 }
+Number.prototype.clamp = function(min, max) {
+    return Math.min(Math.max(this, min), max);
+};
 const scaleNum = (num, inMin, inMax, outMin, outMax) => {
-    return (num - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+    return ((num - inMin) * (outMax - outMin) / (inMax - inMin) + outMin).clamp(outMin,outMax);
 }
 
 //////////////////////
@@ -64,7 +67,7 @@ client.on('message', async message => {
 
         if (cmd === 'ping') {
             let uptimeInMinutes = Math.round((client.uptime / 1000) / 60);
-            let pingRange = scaleNum(client.ws.ping,0,10000,1,255);
+            let pingRange = scaleNum(client.ws.ping,0,1000,1,255);
             const PingColor = rgbHex(pingRange, 255 - pingRange, 0);
 
             const PingEmbed = new Discord.MessageEmbed()
