@@ -82,9 +82,16 @@ client.on('message', async message => {
 
         else if (cmd === 'addchannel'){
             if (channels.includes(message.channel)){
-                message.channel.send("I already Post Here");
+                const AddChannelFailedEmbed = new Discord.MessageEmbed()
+                .setColor("#ff0000")
+                .addField("🛑",`I already Post Here❗`);
+                message.channel.send(AddChannelFailedEmbed);
             }else {
-                message.channel.send("I Will Now Post Memes Here");
+                const AddChannelSuccsessfullEmbed = new Discord.MessageEmbed()
+                .setColor("#00ff00")
+                .addField("👍",`I Will Now Post Memes Here☑`);
+
+                message.channel.send(AddChannelSuccsessfullEmbed);
                 channels.push(message.channel);
                 console.log(`Added (${message.channel.name}) Channel from (${message.channel.guild.name})`);
             }
@@ -93,10 +100,18 @@ client.on('message', async message => {
         else if (cmd === 'remchannel'){
             if (channels.includes(message.channel)){
                 channels.splice(channels.indexOf(message.channel));
-                message.channel.send("Channel Was Removed!");
+                
+                const RemoveChannelSuccsessfullEmbed = new Discord.MessageEmbed()
+                .setColor("#00ff00")
+                .addField("👍",`"${message.channel.name}" Channel Was Removed☑`);
+
+                message.channel.send(RemoveChannelSuccsessfullEmbed);
                 console.log(`Removed (${message.channel.name}) Channel from (${message.channel.guild.name})`);
             }else {
-                message.channel.send("Channel Not In List!");
+                const RemoveChannelFailedEmbed = new Discord.MessageEmbed()
+                .setColor("#ff0000")
+                .addField("🛑",`"${message.channel.name}" Channel Not In List‼`);
+                message.channel.send(RemoveChannelFailedEmbed);
             }
         }
 
@@ -132,7 +147,7 @@ client.on('message', async message => {
 client.login(process.env.token || token);
 
 function yourFunction(){
-    console.log(`Sending Anime Memes To ${channels.length} Channels!\n`);
+    console.log(`Sending Anime Memes To ${channels.length} Channels!`);
     const MemeEmbed = new Discord.MessageEmbed();
     memeAsync("animemes").then(m => {
         MemeEmbed.setImage(m.url)
