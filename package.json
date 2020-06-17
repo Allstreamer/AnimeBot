@@ -13,6 +13,7 @@
   "license": "CC-BY-NC",
   "dependencies": {
     "discord.js": "^12.2.0",
-    "memejs": "^1.2.3"
+    "memejs": "^1.2.3",
+    "rgb-hex": "^3.0.0"
   }
 }

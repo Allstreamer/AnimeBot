@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const fs = require('fs');
+const rgbHex = require('rgb-hex');
 const { memeAsync } = require('memejs');
 const { owner,
         prefix } = require('./Settings.json');
@@ -39,6 +40,9 @@ function GenerateLoadingBar(value,maxValue){
     temp += "▢".repeat(10 - percent);
     return `[${temp}]`;
 }
+const scaleNum = (num, inMin, inMax, outMin, outMax) => {
+    return (num - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+}
 
 //////////////////////
 //Message Processing//
@@ -60,10 +64,14 @@ client.on('message', async message => {
 
         if (cmd === 'ping') {
             let uptimeInMinutes = Math.round((client.uptime / 1000) / 60);
+            let pingRange = scaleNum(client.ws.ping,0,10000,1,255);
+            const PingColor = rgbHex(pingRange, 255 - pingRange, 0);
+
             const PingEmbed = new Discord.MessageEmbed()
             .setAuthor(client.user.username)
-            .setColor("#ff0000")
+            .setColor(`#${PingColor}`)
             .addField("🏓",`Pong in ${client.ws.ping}ms\nThe Bot Has Been Up For ${uptimeInMinutes} Minute${uptimeInMinutes == 1 ? "" : "s"}!`);
+
             message.channel.send(PingEmbed);
             return;
         }
