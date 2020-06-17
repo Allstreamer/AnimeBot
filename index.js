@@ -41,10 +41,11 @@ function GenerateLoadingBar(value,maxValue){                //Generates An Ascii
     temp += "▢".repeat(10 - percent);                       //Repeats Empty Character (The Diffrence Between 100% minus The Current Percent) Times
     return `[${temp}]`;                                      //Adds A Bit Of Style To The Bar And Returns It As An String
 }
-Number.prototype.clamp = function(min, max) {               //Clampes A Number Between Two Values
+
+Number.prototype.clamp = function(min, max) {
     return Math.min(Math.max(this, min), max);
 };
-const scaleNum = (num, inMin, inMax, outMin, outMax) => {   //Scales A Number Between A Range and Clamps It Between The Range
+const scaleNum = (num, inMin, inMax, outMin, outMax) => {
     return ((num - inMin) * (outMax - outMin) / (inMax - inMin) + outMin).clamp(outMin,outMax);
 }
 
