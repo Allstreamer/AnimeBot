@@ -129,7 +129,7 @@ client.on('message', async message => {
         }
 
         else if (cmd === 'meme'){ //If Meme Command
-            let subreddit = (args.length >= 1 ? args[0] : "animemes");
+            let subreddit = (args.length >= 1 ? args[0] : "animemes"); //Sets Subreddit to Either The First Command Argument Or animemes Subreddit
 
             memeAsync(subreddit).then(m => {
                 const MemeEmbed = new Discord.MessageEmbed()
@@ -143,8 +143,8 @@ client.on('message', async message => {
             });
         }
 
-        else if (cmd === 'help'){ //If Help Command
-            message.channel.send(helpData);
+        else if (cmd === 'help'){           //If Help Command
+            message.channel.send(helpData); //Gets Help Data And Sends It
             return;
         }
 
@@ -157,29 +157,29 @@ client.on('message', async message => {
     }
 });
 
-client.login(process.env.token || token);
+client.login(process.env.token || token);//Logging In With Either Env.token Or token.json Defined Token
 
 function yourFunction(){
     console.log(`Sending Anime Memes To ${channels.length} Channels!`);
     const MemeEmbed = new Discord.MessageEmbed();
-    memeAsync("animemes").then(m => {
-        MemeEmbed.setImage(m.url)
+    memeAsync("animemes").then(m => {   //Gets Random Image From animemes Subreddit
+        MemeEmbed.setImage(m.url)       //Sets Image
             .setColor(0x55cc00)
-            .setTitle(m.title)
+            .setTitle(m.title)          //Sets Title
             .setFooter('Here is your Meme ✔');
 
         channels.forEach(channel => {
-            channel.send(MemeEmbed);
+            channel.send(MemeEmbed);    //Sends Meme To Every Channel
         });
     }).catch((err) => {
         channel.send("Error❌ When Getting Reddit post");
     });
 
-    setTimeout(yourFunction, timerLength);
+    setTimeout(yourFunction, timerLength);//Run Function Again After Waiting TimerLength
 }
 yourFunction();
 
-process.on('exit', function (code) {
-    client.destroy();
+process.on('exit', function (code) {//Tiggers On Exit
+    client.destroy();               //Logs Out The Client Before Ending The Program
     return console.log(`About to exit with code ${code}`);
 });
