@@ -1,9 +1,9 @@
 const Discord = require('discord.js');
 const fs = require('fs');
 const { memeAsync } = require('memejs');
-const { token,
-        owner,
+const { owner,
         prefix } = require('./Settings.json');
+const { token } = require('./token.json');
 //https://discord.com/oauth2/authorize?client_id=722119730701533245&permissions=8&scope=bot
 
 const client = new Discord.Client({
