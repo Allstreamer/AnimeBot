@@ -53,47 +53,47 @@ const scaleNum = (num, inMin, inMax, outMin, outMax) => {
 //Message Processing//
 //////////////////////
 client.on('message', async message => {
-    if (message.author.bot || message.system) return; // Ignore bots
+    if (message.author.bot || message.system) return;   // If Message Sent By Bot Or System Ignore Message
 
-    if (message.channel.type === 'dm') { // Direct Message
-        return; //Optionally handle direct messages
+    if (message.channel.type === 'dm') {                // If Dm
+        return;                                         // Return
     }
-    console.log(message.content);
+    console.log(message.content);                       //Log Messages
     
-    if (message.content.toLowerCase().indexOf(prefix.toLowerCase()) === 0) {
+    if (message.content.toLowerCase().indexOf(prefix.toLowerCase()) === 0) {    //If Message Has Prefix
 
-        let msg = message.content.toLowerCase().slice(prefix.length); // slice of the prefix on the message
-        let args = msg.split(' '); // break the message into part by spaces
-        let cmd = args[0].toLowerCase(); // set the first word as the command in lowercase just in case
-        args.shift(); // delete the first word from the args
+        let msg = message.content.toLowerCase().slice(prefix.length);       // slice of the prefix on the message
+        let args = msg.split(' ');                                          // break the message into part by spaces
+        let cmd = args[0].toLowerCase();                                    // set the first word as the command in lowercase just in case
+        args.shift();                                                       // delete the first word from the args
 
-        if (cmd === 'ping') {
-            let uptimeInMinutes = Math.round((client.uptime / 1000) / 60);
-            let pingRange = scaleNum(client.ws.ping,0,1000,1,255);
-            const PingColor = rgbHex(pingRange, 255 - pingRange, 0);
+        if (cmd === 'ping') {                                               //If Ping Command
+            let uptimeInMinutes = Math.round((client.uptime / 1000) / 60);  //Convert Client Uptime Into Minutes
+            let pingRange = scaleNum(client.ws.ping,0,1000,1,255);          //Scale Ping To Range Of 1-255
+            const PingColor = rgbHex(pingRange, 255 - pingRange, 0);        //Convert RGB To Hex Value
 
-            const PingEmbed = new Discord.MessageEmbed()
+            const PingEmbed = new Discord.MessageEmbed()                    //Create Custom Embed
             .setAuthor(client.user.username)
             .setColor(`#${PingColor}`)
             .addField("🏓",`Pong in ${client.ws.ping}ms\nThe Bot Has Been Up For ${uptimeInMinutes} Minute${uptimeInMinutes == 1 ? "" : "s"}!`);
 
-            message.channel.send(PingEmbed);
-            return;
+            message.channel.send(PingEmbed);                                //Send Embed
+            return;                                                         //Return
         }
 
-        else if (cmd === 'stats'){
-            let memUsage = Math.round(process.memoryUsage().heapTotal / 1000000);
-            const statsEmbed = new Discord.MessageEmbed()
+        else if (cmd === 'stats'){ //If Stats Command
+            let memUsage = Math.round(process.memoryUsage().heapTotal / 1000000);   //Convert Memory From Bits To Megabytes And Round
+            const statsEmbed = new Discord.MessageEmbed()                           //Create Embed
                             .setAuthor(client.user.username)
                             .setColor("#00ff00")
                             .addField("💿",`Cpu Usage: ${Math.round(process.cpuUsage().user / 1000)}ms`)
                             .addField("📁", `Memory Usage: ${GenerateLoadingBar(memUsage,500)}${memUsage}mb`)
                             .addField("💻", `Platform: ${process.platform}`)
                             .addField("🛠",`Node.js ${process.version}`);
-            message.channel.send(statsEmbed);
+            message.channel.send(statsEmbed);                                       //Send Embed
         }
 
-        else if (cmd === 'addchannel'){
+        else if (cmd === 'addchannel'){ //If Add Channel Command
             if (channels.includes(message.channel)){
                 const AddChannelFailedEmbed = new Discord.MessageEmbed()
                 .setColor("#ff0000")
@@ -110,7 +110,7 @@ client.on('message', async message => {
             }
         }
 
-        else if (cmd === 'remchannel'){
+        else if (cmd === 'remchannel'){ //If Remove Channel Command
             if (channels.includes(message.channel)){
                 channels.splice(channels.indexOf(message.channel));
                 
@@ -128,7 +128,7 @@ client.on('message', async message => {
             }
         }
 
-        else if (cmd === 'meme'){
+        else if (cmd === 'meme'){ //If Meme Command
             let subreddit = (args.length >= 1 ? args[0] : "animemes");
 
             memeAsync(subreddit).then(m => {
@@ -143,12 +143,12 @@ client.on('message', async message => {
             });
         }
 
-        else if (cmd === 'help'){
+        else if (cmd === 'help'){ //If Help Command
             message.channel.send(helpData);
             return;
         }
 
-        else if (cmd === 'shutdown' && message.author.id == owner) {
+        else if (cmd === 'shutdown' && message.author.id == owner) { //If Shutdown and sent by owner of bot Command
             message.reply(`Shutting Down The Bot❗`).then(message => {
                 client.destroy();
                 process.exit();
