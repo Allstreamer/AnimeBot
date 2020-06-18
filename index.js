@@ -85,7 +85,7 @@ client.on('message', async message => {
             let memUsage = Math.round(process.memoryUsage().heapTotal / 1000000);   //Convert Memory From Bits To Megabytes And Round
             const statsEmbed = new Discord.MessageEmbed()                           //Create Embed
                             .setAuthor(client.user.username)
-                            .setColor("#00ff00")
+                            .setColor("#00ff00") //Green
                             .addField("💿",`Cpu Usage: ${Math.round(process.cpuUsage().user / 1000)}ms`)
                             .addField("📁", `Memory Usage: ${GenerateLoadingBar(memUsage,500)}${memUsage}mb`)
                             .addField("💻", `Platform: ${process.platform}`)
@@ -96,12 +96,12 @@ client.on('message', async message => {
         else if (cmd === 'addchannel'){ //If Add Channel Command
             if (channels.includes(message.channel)){
                 const AddChannelFailedEmbed = new Discord.MessageEmbed()
-                .setColor("#ff0000")
+                .setColor("#ff0000") //Red
                 .addField("🛑",`I already Post Here❗`);
                 message.channel.send(AddChannelFailedEmbed);
             }else {
                 const AddChannelSuccsessfullEmbed = new Discord.MessageEmbed()
-                .setColor("#00ff00")
+                .setColor("#00ff00") //Green
                 .addField("👍",`I Will Now Post Memes Here☑`);
 
                 message.channel.send(AddChannelSuccsessfullEmbed);
@@ -115,14 +115,14 @@ client.on('message', async message => {
                 channels.splice(channels.indexOf(message.channel));
                 
                 const RemoveChannelSuccsessfullEmbed = new Discord.MessageEmbed()
-                .setColor("#00ff00")
+                .setColor("#00ff00") //Green
                 .addField("👍",`"${message.channel.name}" Channel Was Removed☑`);
 
                 message.channel.send(RemoveChannelSuccsessfullEmbed);
                 console.log(`Removed (${message.channel.name}) Channel from (${message.channel.guild.name})`);
             }else {
                 const RemoveChannelFailedEmbed = new Discord.MessageEmbed()
-                .setColor("#ff0000")
+                .setColor("#ff0000") //Red
                 .addField("🛑",`"${message.channel.name}" Channel Not In List‼`);
                 message.channel.send(RemoveChannelFailedEmbed);
             }
@@ -134,7 +134,7 @@ client.on('message', async message => {
             memeAsync(subreddit).then(m => {
                 const MemeEmbed = new Discord.MessageEmbed()
                 .setImage(m.url)
-                .setColor(0x55cc00)
+                .setColor(0x55cc00) //Greenish
                 .setTitle(m.title)
                 .setFooter('Here is your Meme ✔');
                 message.channel.send(MemeEmbed);
