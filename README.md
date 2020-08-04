@@ -1,3 +1,4 @@
+[![forthebadge](https://forthebadge.com/images/badges/built-with-grammas-recipe.svg)](https://forthebadge.com)
 # AnimeBot
 This Is A Simple And Easy To Understand/Edit Discord Bot That Scrapes Reddit To Get Some Fresh Anime Memes
 
